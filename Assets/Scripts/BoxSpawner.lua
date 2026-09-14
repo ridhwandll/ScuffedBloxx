@@ -60,33 +60,63 @@ function OnUpdate(entity, dt)
 
     local currentAngle = math.sin(_timeAlive * SWING_SPEED) * MAX_SWING_ANGLE
 
-    -- Define the exact Pivot Point of the crane
-    local pivotZ = 0.0
+    -- Exact Anchor / Pivot point of the crane arm
     local pivotY = _G.TowerHeight + CRANE_PIVOT_OFFSET_Y
+    local cranePivot = Math.Vec3.new(0.0, pivotY, 0.0)
 
-    -- Calculate the Curved Coordinates (The Arc)
-    local currentX = pivotZ + math.sin(currentAngle) * CABLE_LENGTH
-    
-    -- Subtract because the block hangs DOWN from the pivot
+    -- Arc coordinate calculation
+    local currentX = math.sin(currentAngle) * CABLE_LENGTH
     local currentY = pivotY - math.cos(currentAngle) * CABLE_LENGTH
 
+    -- Update active swinging block transform
     if _currentBlock ~= nil then
-        _currentBlock.TransformC.Position = Math.Vec3.new(currentX, currentY, 0)
+        _currentBlock.TransformC.Position = Math.Vec3.new(currentX, currentY, 0.0)
         local angleInDegrees = currentAngle * (180.0 / math.pi)
-        _currentBlock.TransformC.Rotation = Math.Vec3.new(0, 0, angleInDegrees)
+        _currentBlock.TransformC.Rotation = Math.Vec3.new(0.0, 0.0, angleInDegrees)
     end
 
+    -- Spacebar drop & spawn logic
     local spacePressedNow = Input.IsKeyPressed(Key.Space)
     if spacePressedNow and not _isSpaceDown then
-        DropBlock()        
-        _G.TowerHeight = _G.TowerHeight + BLOCK_HEIGHT        
+        DropBlock()
+        _G.TowerHeight = _G.TowerHeight + BLOCK_HEIGHT
         if _G.TowerCameraTargetY then
             _G.TowerCameraTargetY = _G.TowerCameraTargetY + BLOCK_HEIGHT
-        end        
+        end
         SpawnHangingBlock(entity, currentX, currentY + BLOCK_HEIGHT)
     end
-
     _isSpaceDown = spacePressedNow
+
+    -- Draw 4 cable lines from the top anchor to the 4 corners of the top face
+    if _currentBlock ~= nil then
+        -- Half dimensions (BLOCK_HEIGHT = 2.0)
+        local halfW = 1.0
+        local halfH = BLOCK_HEIGHT * 0.5 -- 1.0
+        local halfD = 1.0
+
+        -- Sine and Cosine of the current tilt angle for rotating the corners
+        local cosA = math.cos(currentAngle)
+        local sinA = math.sin(currentAngle)
+
+        local function GetWorldPoint(localX, localY, localZ)
+            -- 2D rotation matrix applied around the Z-axis:
+            local rotX = (localX * cosA) - (localY * sinA)
+            local rotY = (localX * sinA) + (localY * cosA)
+            return Math.Vec3.new(currentX + rotX, currentY + rotY, localZ)
+        end
+
+        -- Compute the 4 corners of the top face (+Y)
+        local cornerFL = GetWorldPoint(-halfW, halfH,  halfD)
+        local cornerFR = GetWorldPoint( halfW, halfH,  halfD)
+        local cornerBL = GetWorldPoint(-halfW, halfH, -halfD)
+        local cornerBR = GetWorldPoint( halfW, halfH, -halfD)
+
+        local cableColor = Math.Vec4.new(0.15, 0.15, 0.15, 1.0)
+        Renderer.DrawLine(cranePivot, cornerFL, cableColor)
+        Renderer.DrawLine(cranePivot, cornerFR, cableColor)
+        Renderer.DrawLine(cranePivot, cornerBL, cableColor)
+        Renderer.DrawLine(cranePivot, cornerBR, cableColor)
+    end
 end
 
 function OnDestroy(entity)
