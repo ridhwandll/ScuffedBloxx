@@ -1,8 +1,7 @@
 local STARTING_HEIGHT = 5.0
-local CAMERA_PITCH = -14.0 
 
-local BASE_ZOOM_Z = 15.0       -- Normal resting distance
-local ZOOM_OUT_AMOUNT = 10.0   -- How far back it pulls when Space is pressed
+local BASE_ZOOM_Z = 20.0       -- Normal resting distance
+local ZOOM_OUT_AMOUNT = 20.0   -- How far back it pulls when Space is pressed
 local ZOOM_HANG_TIME = 0.7     -- How many seconds to stay zoomed out after a tap
 
 -- Speeds
@@ -24,7 +23,7 @@ function OnUpdate(entity, dt)
         _zoomTimer = _zoomTimer - dt
     end
 
-    -- 2. Detect Spacebar to trigger/reset the timer
+    -- Detect Spacebar to trigger/reset the timer
     if Input.IsKeyPressed(Key.Space) then
         _zoomTimer = ZOOM_HANG_TIME
     end
@@ -38,11 +37,8 @@ function OnUpdate(entity, dt)
         targetZ = BASE_ZOOM_Z + ZOOM_OUT_AMOUNT
     end
     
-    -- 4. APPLY LERP
     local newY = Math.Lerp(currentPos.y, targetY, dt * _panSpeedY)
     local newZ = Math.Lerp(currentPos.z, targetZ, dt * _zoomSpeedZ)
-    
-    -- 5. UPDATE POSITION
     entity.TransformC.Position = Math.Vec3.new(currentPos.x, newY, newZ)
 end
 

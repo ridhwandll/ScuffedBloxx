@@ -48,7 +48,7 @@
                 "UseGravity": true
             },
             "Surge::ScriptComponent": {
-                "Active": false,
+                "Active": true,
                 "ScriptAsset": 7526636842714264631
             },
             "Surge::TransformComponent": {
@@ -120,9 +120,9 @@
             "Surge::RelationshipComponent": {
                 "ChildrenCount": 0,
                 "FirstChild": 0,
-                "NextSibling": 741165561106977325,
+                "NextSibling": 10597532830829427756,
                 "Parent": 7459424756873763574,
-                "PreviousSibling": 0
+                "PreviousSibling": 5193084478602740962
             },
             "Surge::TransformComponent": {
                 "Position": {
@@ -131,14 +131,14 @@
                     "Z": -317.6431884765625
                 },
                 "Rotation": {
-                    "X": -9.251170496327177e-08,
-                    "Y": -45.0,
-                    "Z": -3.904325183157198e-07
+                    "X": -9.251123600506617e-08,
+                    "Y": -45.000003814697266,
+                    "Z": -3.904334846538404e-07
                 },
                 "Scale": {
-                    "X": 1.0000001192092896,
-                    "Y": 1.0,
-                    "Z": 0.9999998807907104
+                    "X": 2.259999990463257,
+                    "Y": 2.259999990463257,
+                    "Z": 2.2599997520446777
                 }
             }
         },
@@ -157,7 +157,7 @@
             "Surge::RelationshipComponent": {
                 "ChildrenCount": 0,
                 "FirstChild": 0,
-                "NextSibling": 0,
+                "NextSibling": 3265905197845132657,
                 "Parent": 7459424756873763574,
                 "PreviousSibling": 741165561106977325
             },
@@ -169,17 +169,57 @@
                 },
                 "Rotation": {
                     "X": 0.0,
-                    "Y": -15.530535697937012,
+                    "Y": -15.530566215515137,
                     "Z": 0.0
                 },
                 "Scale": {
-                    "X": 1.000000238418579,
-                    "Y": 1.0,
-                    "Z": 0.9999991655349731
+                    "X": 1.2300002574920654,
+                    "Y": 1.2300000190734863,
+                    "Z": 1.2299988269805908
+                }
+            }
+        },
+        "Entity12": {
+            "Surge::IDComponent": {
+                "ID": 10597532830829427756
+            },
+            "Surge::MeshComponent": {
+                "Active": true,
+                "DropShadow": true,
+                "MeshID": 11032512059371127376
+            },
+            "Surge::NameComponent": {
+                "Name": "Floor4"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 7459424756873763574,
+                "PreviousSibling": 3265905197845132657
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 59.65842819213867,
+                    "Y": 36.323516845703125,
+                    "Z": -689.6817626953125
+                },
+                "Rotation": {
+                    "X": 180.0,
+                    "Y": 84.96521759033203,
+                    "Z": 180.0
+                },
+                "Scale": {
+                    "X": 1.3199999332427979,
+                    "Y": 1.3199999332427979,
+                    "Z": 1.3199999332427979
                 }
             }
         },
         "Entity2": {
+            "Surge::AudioListenerComponent": {
+                "Active": true
+            },
             "Surge::CameraComponent": {
                 "Active": true,
                 "Camera": {
@@ -470,8 +510,8 @@
                 "Name": "Environment"
             },
             "Surge::RelationshipComponent": {
-                "ChildrenCount": 3,
-                "FirstChild": 3265905197845132657,
+                "ChildrenCount": 4,
+                "FirstChild": 741165561106977325,
                 "NextSibling": 0,
                 "Parent": 0,
                 "PreviousSibling": 0
@@ -515,7 +555,7 @@
                 "FirstChild": 0,
                 "NextSibling": 5193084478602740962,
                 "Parent": 7459424756873763574,
-                "PreviousSibling": 3265905197845132657
+                "PreviousSibling": 0
             },
             "Surge::TransformComponent": {
                 "Position": {
@@ -525,16 +565,16 @@
                 },
                 "Rotation": {
                     "X": 0.0,
-                    "Y": 45.0,
+                    "Y": 45.00001525878906,
                     "Z": 0.0
                 },
                 "Scale": {
-                    "X": 1.000003457069397,
-                    "Y": 1.0,
-                    "Z": 1.0000011920928955
+                    "X": 2.000006914138794,
+                    "Y": 2.0,
+                    "Z": 2.000002384185791
                 }
             }
         },
-        "Size": 12
+        "Size": 13
     }
 }

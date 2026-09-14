@@ -3,10 +3,11 @@
 local BLOCK_ASSET_PATH = "Meshes/Box.gltf"
 local BLOCK_SCRIPT_ASSET_PATH = "Scripts/Block.lua"
 local BLOCK_MATERIAL_PATH = "Materials/Block.smat"
+local BLOCK_DROP_AUDIO_PATH = "Audio/BlockPlaced.mp3"
 local BLOCK_HEIGHT = 2.0       
 
 -- Pendulum Settings
-local CRANE_PIVOT_OFFSET_Y = 15.0 -- The height of the crane's anchor point above the tower
+local CRANE_PIVOT_OFFSET_Y = 13.0 -- The height of the crane's anchor point above the tower
 local CABLE_LENGTH = 10.0
 local SWING_SPEED = 0.9
 local MAX_SWING_ANGLE = 0.4 -- Higher = wider swing
@@ -19,6 +20,9 @@ function SpawnHangingBlock(parentEntity, startX, startY)
     _currentBlock = parentEntity:CreateEntity("HangingBlock")
     _currentBlock.TransformC.Position = Math.Vec3.new(startX, startY, 0)
     _currentBlock.TransformC.Rotation = Math.Vec3.new(0, 0, 0)
+
+    local audioSourceC = _currentBlock:AddAudioSourceC()
+    audioSourceC:SetAudioClip(BLOCK_DROP_AUDIO_PATH)
 
     local meshC = _currentBlock:AddMeshC()
     meshC:SetMesh(BLOCK_ASSET_PATH)
@@ -36,16 +40,13 @@ function DropBlock()
     boxColliderC.HalfExtents = Math.Vec3.new(1, 1, 1)
 
     local rigidBodyC = _currentBlock:AddRigidbodyC()
-    rigidBodyC.Friction = 0.8
+    rigidBodyC.Friction = 1
     rigidBodyC.Bounciness = 0.05
 
-    if _G.ActiveBlocks then
-        table.insert(_G.ActiveBlocks, _currentBlock)
-    end
+    _G.AddBlock(_currentBlock) 
+    _G.OnBlockDropped();
 
     _currentBlock = nil
-
-    _G.OnBlockDropped(true);
 end
 
 function OnCreate(entity)
@@ -61,8 +62,7 @@ function OnUpdate(entity, dt)
     local currentAngle = math.sin(_timeAlive * SWING_SPEED) * MAX_SWING_ANGLE
 
     -- Exact Anchor / Pivot point of the crane arm
-    local pivotY = _G.TowerHeight + CRANE_PIVOT_OFFSET_Y
-    local cranePivot = Math.Vec3.new(0.0, pivotY, 0.0)
+    local pivotY = _G.TowerCameraTargetY + CRANE_PIVOT_OFFSET_Y 
 
     -- Arc coordinate calculation
     local currentX = math.sin(currentAngle) * CABLE_LENGTH
@@ -89,7 +89,6 @@ function OnUpdate(entity, dt)
 
     -- Draw 4 cable lines from the top anchor to the 4 corners of the top face
     if _currentBlock ~= nil then
-        -- Half dimensions (BLOCK_HEIGHT = 2.0)
         local halfW = 1.0
         local halfH = BLOCK_HEIGHT * 0.5 -- 1.0
         local halfD = 1.0
@@ -112,6 +111,7 @@ function OnUpdate(entity, dt)
         local cornerBR = GetWorldPoint( halfW, halfH, -halfD)
 
         local cableColor = Math.Vec4.new(0.15, 0.15, 0.15, 1.0)
+        local cranePivot = Math.Vec3.new(0.0, pivotY + 30, 0.0) -- +30 so that it is never shown in camera
         Renderer.DrawLine(cranePivot, cornerFL, cableColor)
         Renderer.DrawLine(cranePivot, cornerFR, cableColor)
         Renderer.DrawLine(cranePivot, cornerBL, cableColor)

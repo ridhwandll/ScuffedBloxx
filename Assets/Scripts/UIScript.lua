@@ -30,7 +30,7 @@ function OnCreate(entity)
     txt.Size = Math.Vec2.new(0, 0)
     cameraUpButton:OnClick(
     function(self)
-        _G.TowerCameraTargetY = Math.Max(0, _G.TowerCameraTargetY + 5);
+        _G.MoveCameraUp()
     end)
 
     root:AddChild(cameraUpButton)
@@ -49,7 +49,7 @@ function OnCreate(entity)
     txt.Size = Math.Vec2.new(0, 0)
     cameraDownButton:OnClick(
     function(self)
-        _G.TowerCameraTargetY = Math.Max(0, _G.TowerCameraTargetY - 5);
+        _G.MoveCameraDown()
     end)
     
     root:AddChild(cameraDownButton)
