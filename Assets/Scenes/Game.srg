@@ -1,0 +1,540 @@
+{
+    "Scene": {
+        "Entity0": {
+            "Surge::IDComponent": {
+                "ID": 5193084478602740962
+            },
+            "Surge::MeshComponent": {
+                "Active": true,
+                "DropShadow": true,
+                "MeshID": 11032512059371127376
+            },
+            "Surge::NameComponent": {
+                "Name": "Floor2"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 7459424756873763574,
+                "PreviousSibling": 741165561106977325
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": -27.755191802978516,
+                    "Y": 10.443572998046875,
+                    "Z": -292.7621154785156
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": -15.530535697937012,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.000000238418579,
+                    "Y": 1.0,
+                    "Z": 0.9999991655349731
+                }
+            }
+        },
+        "Entity1": {
+            "Surge::IDComponent": {
+                "ID": 3265905197845132657
+            },
+            "Surge::MeshComponent": {
+                "Active": true,
+                "DropShadow": true,
+                "MeshID": 11032512059371127376
+            },
+            "Surge::NameComponent": {
+                "Name": "Floor3"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 741165561106977325,
+                "Parent": 7459424756873763574,
+                "PreviousSibling": 0
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": -167.9852294921875,
+                    "Y": 36.323516845703125,
+                    "Z": -317.6431884765625
+                },
+                "Rotation": {
+                    "X": -9.251170496327177e-08,
+                    "Y": -45.0,
+                    "Z": -3.904325183157198e-07
+                },
+                "Scale": {
+                    "X": 1.0000001192092896,
+                    "Y": 1.0,
+                    "Z": 0.9999998807907104
+                }
+            }
+        },
+        "Entity10": {
+            "Surge::IDComponent": {
+                "ID": 2304118950538759639
+            },
+            "Surge::NameComponent": {
+                "Name": "GameManager"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 0,
+                "PreviousSibling": 0
+            },
+            "Surge::ScriptComponent": {
+                "Active": true,
+                "ScriptAsset": 8294650314164503889
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 3.4161139410571195e-06,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            }
+        },
+        "Entity11": {
+            "Surge::IDComponent": {
+                "ID": 9260454393140967904
+            },
+            "Surge::MeshColliderComponent": {
+                "Active": true,
+                "LocalOffset": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "LocalRotation": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                }
+            },
+            "Surge::MeshComponent": {
+                "Active": true,
+                "DropShadow": true,
+                "MeshID": 11032512059371127376
+            },
+            "Surge::NameComponent": {
+                "Name": "Floor"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 0,
+                "PreviousSibling": 0
+            },
+            "Surge::RigidbodyComponent": {
+                "Active": true,
+                "AngularDamping": 0.05000000074505806,
+                "Bounciness": 0.0,
+                "ContinuousCollision": false,
+                "FreezeRotationX": false,
+                "FreezeRotationY": false,
+                "FreezeRotationZ": false,
+                "Friction": 0.20000000298023224,
+                "IsSensor": false,
+                "LinearDamping": 0.05000000074505806,
+                "Mass": 1.0,
+                "Type": "STATIC",
+                "UseGravity": true
+            },
+            "Surge::ScriptComponent": {
+                "Active": false,
+                "ScriptAsset": 7526636842714264631
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            }
+        },
+        "Entity2": {
+            "Surge::IDComponent": {
+                "ID": 741165561106977325
+            },
+            "Surge::MeshComponent": {
+                "Active": true,
+                "DropShadow": true,
+                "MeshID": 11032512059371127376
+            },
+            "Surge::NameComponent": {
+                "Name": "Floor1"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 5193084478602740962,
+                "Parent": 7459424756873763574,
+                "PreviousSibling": 3265905197845132657
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 168.4051055908203,
+                    "Y": 7.810047149658203,
+                    "Z": -247.46038818359375
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": 45.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.000003457069397,
+                    "Y": 1.0,
+                    "Z": 1.0000011920928955
+                }
+            }
+        },
+        "Entity3": {
+            "Surge::IDComponent": {
+                "ID": 7459424756873763574
+            },
+            "Surge::NameComponent": {
+                "Name": "Environment"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 3,
+                "FirstChild": 3265905197845132657,
+                "NextSibling": 0,
+                "Parent": 0,
+                "PreviousSibling": 0
+            },
+            "Surge::ScriptComponent": {
+                "Active": true,
+                "ScriptAsset": 2263258219366753820
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            }
+        },
+        "Entity4": {
+            "Surge::IDComponent": {
+                "ID": 10460414607237354780
+            },
+            "Surge::NameComponent": {
+                "Name": "Canvas"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 0,
+                "PreviousSibling": 0
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            },
+            "Surge::UICanvasComponent": {
+                "Active": true,
+                "IsInstantiated": false,
+                "ScriptAsset": 17519489891759269823,
+                "ShowCanvas": true
+            }
+        },
+        "Entity5": {
+            "Surge::IDComponent": {
+                "ID": 12198536265763752538
+            },
+            "Surge::NameComponent": {
+                "Name": "BlockSpawner"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 0,
+                "PreviousSibling": 0
+            },
+            "Surge::ScriptComponent": {
+                "Active": true,
+                "ScriptAsset": 6975968805991957180
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            }
+        },
+        "Entity6": {
+            "Surge::BoxColliderComponent": {
+                "Active": true,
+                "HalfExtents": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            },
+            "Surge::IDComponent": {
+                "ID": 8836450854160053048
+            },
+            "Surge::MeshComponent": {
+                "Active": true,
+                "DropShadow": true,
+                "MeshID": 14036608484243534551
+            },
+            "Surge::NameComponent": {
+                "Name": "HangingBlock"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 0,
+                "PreviousSibling": 0
+            },
+            "Surge::RigidbodyComponent": {
+                "Active": true,
+                "AngularDamping": 0.05000000074505806,
+                "Bounciness": 0.0,
+                "ContinuousCollision": false,
+                "FreezeRotationX": false,
+                "FreezeRotationY": false,
+                "FreezeRotationZ": false,
+                "Friction": 0.20000000298023224,
+                "IsSensor": false,
+                "LinearDamping": 0.05000000074505806,
+                "Mass": 1.0,
+                "Type": "STATIC",
+                "UseGravity": true
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": -0.013982534408569336,
+                    "Y": 2.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            }
+        },
+        "Entity7": {
+            "Surge::EnvironmentComponent": {
+                "Active": true,
+                "Azimuth": 180.0,
+                "Elevation": 0.0,
+                "EnableSunDisk": true,
+                "Exposure": 0.013799999840557575,
+                "GroundAmbient": {
+                    "X": 0.4092826843261719,
+                    "Y": 0.4092826843261719,
+                    "Z": 0.4092826843261719
+                },
+                "HorizonAmbient": {
+                    "X": 0.7046413421630859,
+                    "Y": 0.7046413421630859,
+                    "Z": 0.7046413421630859
+                },
+                "SkyAmbient": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                },
+                "SunIntensity": 1.0,
+                "Turbidity": 1.899999976158142
+            },
+            "Surge::IDComponent": {
+                "ID": 4395925954882680450
+            },
+            "Surge::NameComponent": {
+                "Name": "Environment"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 0,
+                "PreviousSibling": 0
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            }
+        },
+        "Entity8": {
+            "Surge::IDComponent": {
+                "ID": 669105345511284147
+            },
+            "Surge::LightComponent": {
+                "Active": true,
+                "Color": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                },
+                "Intensity": 3.0,
+                "Radius": 1.0,
+                "Type": "DIRECTIONAL"
+            },
+            "Surge::NameComponent": {
+                "Name": "Directional Light"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 0,
+                "PreviousSibling": 0
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 2.248368501663208,
+                    "Y": 6.0260009765625,
+                    "Z": -3.028886079788208
+                },
+                "Rotation": {
+                    "X": 75.10148620605469,
+                    "Y": 3.4150946248701075e-06,
+                    "Z": -44.602195739746094
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0000004768371582,
+                    "Z": 1.0000001192092896
+                }
+            }
+        },
+        "Entity9": {
+            "Surge::CameraComponent": {
+                "Active": true,
+                "Camera": {
+                    "Orthographic FarClip": 1.0,
+                    "Orthographic NearClip": -1.0,
+                    "Orthographic Size": 10.0,
+                    "Perspective FarClip": 1024.0,
+                    "Perspective NearClip": 0.10000000149011612,
+                    "Projection": "Perspective",
+                    "Vertical FOV": 45.0
+                },
+                "FixedAspectRatio": false,
+                "Primary": true
+            },
+            "Surge::IDComponent": {
+                "ID": 250222693414938521
+            },
+            "Surge::NameComponent": {
+                "Name": "Camera"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 0,
+                "PreviousSibling": 0
+            },
+            "Surge::ScriptComponent": {
+                "Active": true,
+                "ScriptAsset": 12204075465313167050
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 15.0,
+                    "Y": 5.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 0.999701738357544,
+                    "Y": 0.999996542930603,
+                    "Z": 0.9997020363807678
+                }
+            }
+        },
+        "Size": 12
+    }
+}
