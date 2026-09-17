@@ -1,70 +1,114 @@
+-- GameManager.lua
 local STARTING_HEIGHT = 5.0
-local BLOCK_HEIGHT = 2.0
+local CAMERA_LOOK_OFFSET_Y = 2.0
+local ABSOLUTE_KILL_Y = -2.0
+
+local function ClearActiveBlocks()
+    if _G.ActiveBlocks then
+        for i = 1, #_G.ActiveBlocks do
+            local b = _G.ActiveBlocks[i]
+            if b and b:IsValid() then
+                b:Destroy()
+            end
+        end
+    end
+    _G.ActiveBlocks = {}
+end
 
 function OnCreate(entity)
-    _G.GameState = "PLAYING" -- TODO States: "PLAYING", "GAMEOVER"
+    _G.GameState = "MENU"
     _G.Score = 0
     _G.Lives = 3
-    _G.StatusText = "Press SPACE"    
     _G.TowerCameraTargetY = STARTING_HEIGHT
-
+    _G.TowerHeight = 0.0
     _G.ActiveBlocks = {}
 
-    _G.AddBlock = function (currentBlock)
+    _G.AddBlock = function(currentBlock)
         table.insert(_G.ActiveBlocks, currentBlock)
     end
 
-    _G.IncreaseHeight = function(blockCount)
-        blockCount = blockCount or 1
-        _G.TowerHeight = _G.TowerHeight + (BLOCK_HEIGHT * blockCount)
-    end
-    _G.DecreaseHeight = function(blockCount)
-        blockCount = blockCount or 1
-        _G.TowerHeight = _G.TowerHeight - (BLOCK_HEIGHT * blockCount)
-    end
-
-    -- Camera Utils
-    _G.MoveCameraUp = function()
-        _G.TowerCameraTargetY = _G.TowerCameraTargetY + BLOCK_HEIGHT
-    end
-    _G.MoveCameraDown = function()
-        _G.TowerCameraTargetY = _G.TowerCameraTargetY - BLOCK_HEIGHT
+    _G.StartGame = function()
+        ClearActiveBlocks()
+        _G.Score = 0
+        _G.Lives = 3
+        _G.TowerCameraTargetY = STARTING_HEIGHT
+        _G.TowerHeight = 0.0
+        _G.GameState = "PLAYING"
     end
 
-    --Expose Global Functions for the Crane to call
+    _G.RestartGame = function()
+        _G.StartGame()
+    end
+
+    _G.GoToMainMenu = function()
+        ClearActiveBlocks()
+        _G.Score = 0
+        _G.Lives = 3
+        _G.TowerCameraTargetY = STARTING_HEIGHT
+        _G.TowerHeight = 0.0
+        _G.GameState = "MENU"
+    end
+
     _G.OnBlockDropped = function()
         if _G.GameState ~= "PLAYING" then return end
-        _G.IncreaseHeight()
         _G.Score = _G.Score + 1
+    end
+
+    _G.OnBlockFellOff = function()
+        if _G.GameState ~= "PLAYING" then return end
+        _G.Lives = _G.Lives - 1
+        if _G.Lives <= 0 then
+            _G.GameState = "GAMEOVER"
+        end
     end
 end
 
 function OnUpdate(entity, dt)
+    if _G.GameState ~= "PLAYING" then
+        return
+    end
+
+    local highestBlockY = 0.0
+
     if _G.ActiveBlocks then
         for i = #_G.ActiveBlocks, 1, -1 do
             local blockEntity = _G.ActiveBlocks[i]
 
-            if not blockEntity:IsValid() then
+            if blockEntity and blockEntity:IsValid() then
+                local bPos = blockEntity.TransformC.Position
+
+                local hasFallenOff = (bPos.y < ABSOLUTE_KILL_Y)
+                if hasFallenOff then
+                    _G.OnBlockFellOff()
+                    blockEntity:Destroy()
+                    table.remove(_G.ActiveBlocks, i)
+                else
+                    if bPos.y > highestBlockY then
+                        highestBlockY = bPos.y
+                    end
+                end
+            else
                 table.remove(_G.ActiveBlocks, i)
             end
         end
     end
-    
-    local textStr = "Score: " .. tostring(_G.Score) .. " | Lives: " .. tostring(_G.Lives)    
-    _G.StatusText = textStr
+
+    _G.TowerCameraTargetY = math.max(STARTING_HEIGHT, highestBlockY + CAMERA_LOOK_OFFSET_Y)
+    _G.TowerHeight = highestBlockY
 end
 
 function OnDestroy(entity)
+    ClearActiveBlocks()
     _G.ActiveBlocks = nil 
     _G.GameState = nil
     _G.Score = nil
     _G.Lives = nil
     _G.TowerCameraTargetY = nil
-
-    _G.IncreaseHeight = nil
-    _G.DecreaseHeight = nil
-    _G.MoveCameraUp = nil
-    _G.MoveCameraDown = nil
+    _G.TowerHeight = nil
+    _G.StartGame = nil
+    _G.RestartGame = nil
+    _G.GoToMainMenu = nil
+    _G.AddBlock = nil
     _G.OnBlockDropped = nil
-    _G.StatusText = nil;
+    _G.OnBlockFellOff = nil
 end

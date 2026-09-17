@@ -1,6 +1,51 @@
 {
     "Scene": {
         "Entity0": {
+            "Surge::AudioSourceComponent": {
+                "Active": true,
+                "Attenuation": "INVERSE_DISTANCE",
+                "AudioClipAsset": 14130970378238898194,
+                "IsSpatialized": false,
+                "IsStreaming": false,
+                "Looping": false,
+                "MaxDistance": 100.0,
+                "MinDistance": 1.0,
+                "Pitch": 0.699999988079071,
+                "PlayOnAwake": false,
+                "Volume": 2.0
+            },
+            "Surge::IDComponent": {
+                "ID": 10347380063881348406
+            },
+            "Surge::NameComponent": {
+                "Name": "BlockHitAudioPlayer"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 2134531053348677117,
+                "Parent": 6605208181807719287,
+                "PreviousSibling": 0
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            }
+        },
+        "Entity1": {
             "Surge::IDComponent": {
                 "ID": 9260454393140967904
             },
@@ -41,6 +86,7 @@
                 "FreezeRotationY": false,
                 "FreezeRotationZ": false,
                 "Friction": 0.20000000298023224,
+                "Interpolate": true,
                 "IsSensor": false,
                 "LinearDamping": 0.05000000074505806,
                 "Mass": 1.0,
@@ -69,43 +115,44 @@
                 }
             }
         },
-        "Entity1": {
+        "Entity10": {
             "Surge::IDComponent": {
-                "ID": 2304118950538759639
+                "ID": 741165561106977325
+            },
+            "Surge::MeshComponent": {
+                "Active": true,
+                "DropShadow": true,
+                "MeshID": 11032512059371127376
             },
             "Surge::NameComponent": {
-                "Name": "GameManager"
+                "Name": "Floor1"
             },
             "Surge::RelationshipComponent": {
                 "ChildrenCount": 0,
                 "FirstChild": 0,
-                "NextSibling": 0,
-                "Parent": 0,
+                "NextSibling": 5193084478602740962,
+                "Parent": 7459424756873763574,
                 "PreviousSibling": 0
-            },
-            "Surge::ScriptComponent": {
-                "Active": true,
-                "ScriptAsset": 8294650314164503889
             },
             "Surge::TransformComponent": {
                 "Position": {
-                    "X": 0.0,
-                    "Y": 0.0,
-                    "Z": 0.0
+                    "X": 168.4051055908203,
+                    "Y": 7.810047149658203,
+                    "Z": -247.46038818359375
                 },
                 "Rotation": {
-                    "X": 3.4161139410571195e-06,
-                    "Y": 0.0,
+                    "X": 0.0,
+                    "Y": 45.00001525878906,
                     "Z": 0.0
                 },
                 "Scale": {
-                    "X": 1.0,
-                    "Y": 1.0,
-                    "Z": 1.0
+                    "X": 2.000006914138794,
+                    "Y": 2.0,
+                    "Z": 2.000002384185791
                 }
             }
         },
-        "Entity10": {
+        "Entity11": {
             "Surge::IDComponent": {
                 "ID": 3265905197845132657
             },
@@ -142,7 +189,7 @@
                 }
             }
         },
-        "Entity11": {
+        "Entity12": {
             "Surge::IDComponent": {
                 "ID": 5193084478602740962
             },
@@ -179,7 +226,7 @@
                 }
             }
         },
-        "Entity12": {
+        "Entity13": {
             "Surge::IDComponent": {
                 "ID": 10597532830829427756
             },
@@ -216,7 +263,120 @@
                 }
             }
         },
+        "Entity14": {
+            "Surge::AudioSourceComponent": {
+                "Active": true,
+                "Attenuation": "INVERSE_DISTANCE",
+                "AudioClipAsset": 15994863323137634780,
+                "IsSpatialized": false,
+                "IsStreaming": true,
+                "Looping": true,
+                "MaxDistance": 100.0,
+                "MinDistance": 1.0,
+                "Pitch": 1.0,
+                "PlayOnAwake": true,
+                "Volume": 1.2999999523162842
+            },
+            "Surge::IDComponent": {
+                "ID": 2134531053348677117
+            },
+            "Surge::NameComponent": {
+                "Name": "BGMusicPlayer"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 6605208181807719287,
+                "PreviousSibling": 10347380063881348406
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            }
+        },
+        "Entity15": {
+            "Surge::IDComponent": {
+                "ID": 6605208181807719287
+            },
+            "Surge::NameComponent": {
+                "Name": "Audio"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 2,
+                "FirstChild": 10347380063881348406,
+                "NextSibling": 0,
+                "Parent": 0,
+                "PreviousSibling": 0
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            }
+        },
         "Entity2": {
+            "Surge::IDComponent": {
+                "ID": 2304118950538759639
+            },
+            "Surge::NameComponent": {
+                "Name": "GameManager"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 0,
+                "PreviousSibling": 0
+            },
+            "Surge::ScriptComponent": {
+                "Active": true,
+                "ScriptAsset": 8294650314164503889
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 3.4161139410571195e-06,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            }
+        },
+        "Entity3": {
             "Surge::AudioListenerComponent": {
                 "Active": true
             },
@@ -269,7 +429,7 @@
                 }
             }
         },
-        "Entity3": {
+        "Entity4": {
             "Surge::IDComponent": {
                 "ID": 669105345511284147
             },
@@ -280,7 +440,7 @@
                     "Y": 1.0,
                     "Z": 1.0
                 },
-                "Intensity": 3.0,
+                "Intensity": 5.0,
                 "Radius": 1.0,
                 "Type": "DIRECTIONAL"
             },
@@ -301,22 +461,22 @@
                     "Z": -3.028886079788208
                 },
                 "Rotation": {
-                    "X": 75.10148620605469,
-                    "Y": 3.4150946248701075e-06,
-                    "Z": -44.602195739746094
+                    "X": 74.75204467773438,
+                    "Y": 18.480955123901367,
+                    "Z": -39.511287689208984
                 },
                 "Scale": {
-                    "X": 1.0,
-                    "Y": 1.0000004768371582,
-                    "Z": 1.0000001192092896
+                    "X": 0.9999998807907104,
+                    "Y": 0.9999974966049194,
+                    "Z": 0.9999983906745911
                 }
             }
         },
-        "Entity4": {
+        "Entity5": {
             "Surge::EnvironmentComponent": {
                 "Active": true,
-                "Azimuth": 180.0,
-                "Elevation": 0.0,
+                "Azimuth": 150.0,
+                "Elevation": 10.0,
                 "EnableSunDisk": true,
                 "Exposure": 0.013799999840557575,
                 "GroundAmbient": {
@@ -368,7 +528,7 @@
                 }
             }
         },
-        "Entity5": {
+        "Entity6": {
             "Surge::BoxColliderComponent": {
                 "Active": true,
                 "HalfExtents": {
@@ -404,6 +564,7 @@
                 "FreezeRotationY": false,
                 "FreezeRotationZ": false,
                 "Friction": 0.20000000298023224,
+                "Interpolate": true,
                 "IsSensor": false,
                 "LinearDamping": 0.05000000074505806,
                 "Mass": 1.0,
@@ -428,7 +589,7 @@
                 }
             }
         },
-        "Entity6": {
+        "Entity7": {
             "Surge::IDComponent": {
                 "ID": 12198536265763752538
             },
@@ -464,7 +625,7 @@
                 }
             }
         },
-        "Entity7": {
+        "Entity8": {
             "Surge::IDComponent": {
                 "ID": 10460414607237354780
             },
@@ -502,7 +663,7 @@
                 "ShowCanvas": true
             }
         },
-        "Entity8": {
+        "Entity9": {
             "Surge::IDComponent": {
                 "ID": 7459424756873763574
             },
@@ -538,43 +699,6 @@
                 }
             }
         },
-        "Entity9": {
-            "Surge::IDComponent": {
-                "ID": 741165561106977325
-            },
-            "Surge::MeshComponent": {
-                "Active": true,
-                "DropShadow": true,
-                "MeshID": 11032512059371127376
-            },
-            "Surge::NameComponent": {
-                "Name": "Floor1"
-            },
-            "Surge::RelationshipComponent": {
-                "ChildrenCount": 0,
-                "FirstChild": 0,
-                "NextSibling": 5193084478602740962,
-                "Parent": 7459424756873763574,
-                "PreviousSibling": 0
-            },
-            "Surge::TransformComponent": {
-                "Position": {
-                    "X": 168.4051055908203,
-                    "Y": 7.810047149658203,
-                    "Z": -247.46038818359375
-                },
-                "Rotation": {
-                    "X": 0.0,
-                    "Y": 45.00001525878906,
-                    "Z": 0.0
-                },
-                "Scale": {
-                    "X": 2.000006914138794,
-                    "Y": 2.0,
-                    "Z": 2.000002384185791
-                }
-            }
-        },
-        "Size": 13
+        "Size": 16
     }
 }

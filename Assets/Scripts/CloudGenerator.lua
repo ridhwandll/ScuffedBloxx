@@ -20,15 +20,11 @@ end
 local function SpawnCloud(parentEntity, spawnX, spawnY, spawnZ)
     local cloud = parentEntity:CreateEntity("Cloud")
     
-    -- Setup initial transform
-    cloud.TransformC.Position = Math.Vec3.new(spawnX, spawnY, spawnZ)
-    -- cloud.TransformC.Rotation = Math.Vec3.new(0, RandomRange(0, 360), 0)
-    
-    local uniformScale = RandomRange(1.0, 1.1)
+    cloud.TransformC.Position = Math.Vec3.new(spawnX, spawnY, spawnZ)   
+    local uniformScale = RandomRange(1.0, 1.2)
     cloud.TransformC.Scale = Math.Vec3.new(uniformScale, uniformScale, uniformScale)
     cloud:SetParent(parentEntity)
 
-    -- Attach only the Mesh component and assign the asset
     local meshC = cloud:AddMeshC()
     meshC:SetMesh(CLOUD_MESH_PATH)
 
@@ -42,7 +38,6 @@ function OnCreate(entity)
     _clouds = {}
     math.randomseed(os.time())
 
-    -- Initial population of clouds across the sky
     for _ = 1, TOTAL_CLOUDS do
         local rx = RandomRange(MIN_X, MAX_X)
         local ry = RandomRange(MIN_Y, MAX_Y)
@@ -64,7 +59,6 @@ function OnUpdate(entity, dt)
             local pos = cloudEntity.TransformC.Position
             local newX = pos.x + (cloudData.Speed * dt)
 
-            -- Wrap around to the other side of the sky
             if newX > MAX_X then
                 newX = MIN_X
                 pos.y = RandomRange(MIN_Y, MAX_Y)
