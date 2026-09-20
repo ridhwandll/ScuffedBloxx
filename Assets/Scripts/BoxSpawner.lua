@@ -1,5 +1,3 @@
--- BoxSpawner.lua
-
 local BLOCK_ASSET_PATH = "Meshes/Box.gltf"
 local BLOCK_SCRIPT_ASSET_PATH = "Scripts/Block.lua"
 local BLOCK_HEIGHT = 2.0       
@@ -7,7 +5,7 @@ local BLOCK_HEIGHT = 2.0
 -- Pendulum Settings
 local CRANE_PIVOT_OFFSET_Y = 13.0 -- height of the crane's anchor point above the tower
 local CABLE_LENGTH = 10.0
-local SWING_SPEED = 0.9
+local SWING_SPEED = 1.4
 local MAX_SWING_ANGLE = 0.4 -- Higher = wider swing
 
 local _timeAlive = 0.0

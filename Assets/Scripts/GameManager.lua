@@ -1,4 +1,3 @@
--- GameManager.lua
 local STARTING_HEIGHT = 5.0
 local CAMERA_LOOK_OFFSET_Y = 2.0
 local ABSOLUTE_KILL_Y = -2.0
@@ -34,6 +33,7 @@ function OnCreate(entity)
         _G.TowerCameraTargetY = STARTING_HEIGHT
         _G.TowerHeight = 0.0
         _G.GameState = "PLAYING"
+        _G.ResetPlane()
     end
 
     _G.RestartGame = function()
