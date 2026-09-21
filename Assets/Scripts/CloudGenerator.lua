@@ -2,9 +2,9 @@
 
 local CLOUD_MESH_PATH = "Meshes/Cloud.gltf"
 
-local TOTAL_CLOUDS = 15
-local MIN_X = -80.0
-local MAX_X = 80.0
+local TOTAL_CLOUDS = 20
+local MIN_X = -150.0
+local MAX_X = 150.0
 local MIN_Y = 5.0
 local MAX_Y = 32.0
 local MIN_Z = -80.0

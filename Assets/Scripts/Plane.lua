@@ -7,7 +7,13 @@ local _timeAlive = 0.0
 local _rb = nil
 local _isCollided = false
 
+local _planeIncomingAudioSrc = nil
+local _planeCrashAudioSrc = nil
+
 function OnCreate(entity)
+
+    _planeIncomingAudioSrc = entity:FindEntityByName("PlaneIncomingAudio").AudioSourceC
+    _planeCrashAudioSrc = entity:FindEntityByName("Plane").AudioSourceC
 
     _G.ResetPlane = function ()
         entity.TransformC.Position = Math.Vec3.new(-9999.0, -9999.0, -9999.0)
@@ -29,6 +35,7 @@ function OnUpdate(entity, dt)
         if _G.ActiveBlocks and #_G.ActiveBlocks >= TARGET_BLOCK_COUNT then
             _isTriggered = true
             _G.PlaneIncoming = true
+            _planeIncomingAudioSrc:Play()
         end
         return
     end
@@ -37,7 +44,7 @@ function OnUpdate(entity, dt)
         _timeAlive = _timeAlive + dt
 
         if not _hasSpawned then
-            entity.TransformC.Position = Math.Vec3.new(-100.0, _G.TowerCameraTargetY - 10, 0.0)
+            entity.TransformC.Position = Math.Vec3.new(-400.0, _G.TowerCameraTargetY - 10, 0.0)
             entity.TransformC.Rotation = Math.Vec3.new(0, -91.54, 0)
             
             local boxC = entity:AddBoxColliderC()
@@ -57,7 +64,7 @@ function OnUpdate(entity, dt)
         if _hasSpawned and _rb and not _isCollided then
             _rb:SetLinearVelocity(Math.Vec3.new(FLY_SPEED, 0.0, 0.0))
         elseif _hasSpawned and _rb and _isCollided then
-            _rb:AddImpulse(Math.Vec3.new(FLY_SPEED, 0.0, 0.0))
+            -- _rb:AddImpulse(Math.Vec3.new(FLY_SPEED, 0.0, 0.0))
         end
 
         if entity.TransformC.Position.x > 100.0 then
@@ -73,8 +80,12 @@ end
 
 function OnCollisionEnter(entity, otherEntity)        
     local otherName = otherEntity.NameC.Name
-    if otherName == "HangingBlock" then
+    if otherName == "HangingBlock" and not _isCollided then
         _isCollided = true
+        _planeCrashAudioSrc.Volume = 2
+        _planeCrashAudioSrc:Play()
+        _planeIncomingAudioSrc.Volume = 0.2
+        _G.CameraShake(3, 1)
     end    
 end
 

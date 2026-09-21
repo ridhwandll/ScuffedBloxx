@@ -1,6 +1,19 @@
 {
     "Scene": {
         "Entity0": {
+            "Surge::AudioSourceComponent": {
+                "Active": true,
+                "Attenuation": "INVERSE_DISTANCE",
+                "AudioClipAsset": 16996174337188246473,
+                "IsSpatialized": false,
+                "IsStreaming": true,
+                "Looping": false,
+                "MaxDistance": 51.459999084472656,
+                "MinDistance": 10.0,
+                "Pitch": 0.800000011920929,
+                "PlayOnAwake": false,
+                "Volume": 1.5
+            },
             "Surge::IDComponent": {
                 "ID": 705021152482043321
             },
@@ -30,14 +43,14 @@
                     "Z": -0.4683043658733368
                 },
                 "Rotation": {
-                    "X": 97.37075805664063,
-                    "Y": -65.53986358642578,
-                    "Z": -96.71490478515625
+                    "X": 97.37081146240234,
+                    "Y": -65.53998565673828,
+                    "Z": -96.71492004394531
                 },
                 "Scale": {
-                    "X": 0.4688311815261841,
-                    "Y": 0.46883517503738403,
-                    "Z": 0.46884235739707947
+                    "X": 0.3516233563423157,
+                    "Y": 0.3516263961791992,
+                    "Z": 0.3516317903995514
                 }
             }
         },
@@ -49,7 +62,7 @@
                 "Name": "Audio"
             },
             "Surge::RelationshipComponent": {
-                "ChildrenCount": 2,
+                "ChildrenCount": 3,
                 "FirstChild": 10347380063881348406,
                 "NextSibling": 0,
                 "Parent": 0,
@@ -437,6 +450,51 @@
                 }
             }
         },
+        "Entity17": {
+            "Surge::AudioSourceComponent": {
+                "Active": true,
+                "Attenuation": "LINEAR_DISTANCE",
+                "AudioClipAsset": 2556320900026801630,
+                "IsSpatialized": true,
+                "IsStreaming": true,
+                "Looping": false,
+                "MaxDistance": 500.0,
+                "MinDistance": 1.0,
+                "Pitch": 1.0,
+                "PlayOnAwake": false,
+                "Volume": 1.399999976158142
+            },
+            "Surge::IDComponent": {
+                "ID": 8363898142011356542
+            },
+            "Surge::NameComponent": {
+                "Name": "PlaneIncomingAudio"
+            },
+            "Surge::RelationshipComponent": {
+                "ChildrenCount": 0,
+                "FirstChild": 0,
+                "NextSibling": 0,
+                "Parent": 6605208181807719287,
+                "PreviousSibling": 2134531053348677117
+            },
+            "Surge::TransformComponent": {
+                "Position": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Rotation": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                },
+                "Scale": {
+                    "X": 1.0,
+                    "Y": 1.0,
+                    "Z": 1.0
+                }
+            }
+        },
         "Entity2": {
             "Surge::AudioSourceComponent": {
                 "Active": true,
@@ -460,7 +518,7 @@
             "Surge::RelationshipComponent": {
                 "ChildrenCount": 0,
                 "FirstChild": 0,
-                "NextSibling": 0,
+                "NextSibling": 8363898142011356542,
                 "Parent": 6605208181807719287,
                 "PreviousSibling": 10347380063881348406
             },
@@ -740,6 +798,6 @@
                 }
             }
         },
-        "Size": 17
+        "Size": 18
     }
 }
