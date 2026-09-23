@@ -57,6 +57,7 @@ function OnCreate(entity)
     _G.OnBlockFellOff = function()
         if _G.GameState ~= "PLAYING" then return end
         _G.Lives = _G.Lives - 1
+        _G.Score = _G.Score - 1
         if _G.Lives <= 0 then
             _G.GameState = "GAMEOVER"
         end

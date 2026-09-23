@@ -21,9 +21,10 @@ local function NewVec4(r, g, b, a) return Math.Vec4.new(r, g, b, a) end
 --------------------------------------------------------------------------
 local HIDDEN_OFFSET_Y = -9999.0   -- parks a popup far off-screen while hidden
 
-local MENU_BASE_SIZE     = NewVec2(620, 560)
+local MENU_BASE_SIZE     = NewVec2(620, 620)
 local GAMEOVER_BASE_SIZE = NewVec2(620, 520)
 local PAUSE_BASE_SIZE    = NewVec2(620, 520)
+local CREDITS_BASE_SIZE  = NewVec2(620, 620)
 local HUD_SIZE           = NewVec2(800, 100)
 local HUD_OFFSET_Y       = 20.0
 
@@ -36,6 +37,8 @@ local GAMEOVER_OPEN_SPEED  = 3.6
 local GAMEOVER_CLOSE_SPEED = 4.8
 local PAUSE_OPEN_SPEED     = 3.6
 local PAUSE_CLOSE_SPEED    = 4.8
+local CREDITS_OPEN_SPEED   = 3.2
+local CREDITS_CLOSE_SPEED  = 4.5
 local HUD_OPEN_SPEED       = 5.0
 
 local FLOAT_AMPLITUDE = 8.0    -- px, idle main-menu bob
@@ -225,7 +228,7 @@ end
 -- Layout construction
 --------------------------------------------------------------------------
 
-local function BuildMainMenu()
+local function BuildMainMenu(onCreditsClick)
     local container = UIButton.new("", GLOBAL_FONT, "")
     container.Anchor = NewVec2(0.5, 0.5)
     container.Pivot  = NewVec2(0.5, 0.5)
@@ -234,18 +237,18 @@ local function BuildMainMenu()
     local popup = Popup.new(container, MENU_BASE_SIZE, POPUP_BG_COLOR, MENU_OPEN_SPEED, MENU_CLOSE_SPEED, true)
 
     container:AddChild(ConfigureLabel(UIText.new("SCUFFED BLOXX", GLOBAL_FONT), {
-        anchor = NewVec2(0.5, 0.20), fontSize = 67, color = NewVec4(1.0, 0.85, 0.1, 1.0),
+        anchor = NewVec2(0.5, 0.16), fontSize = 67, color = NewVec4(1.0, 0.85, 0.1, 1.0),
     }))
 
-    container:AddChild(ConfigureLabel(UIText.new("They hit the second tower!", GLOBAL_FONT), {
-        anchor = NewVec2(0.5, 0.35), fontSize = 33, color = NewVec4(0.85, 0.85, 0.85, 1.0),
+    container:AddChild(ConfigureLabel(UIText.new("Try to build as high as your dreams!", GLOBAL_FONT), {
+        anchor = NewVec2(0.5, 0.29), fontSize = 33, color = NewVec4(0.85, 0.85, 0.85, 1.0),
     }))
 
     container:AddChild(ConfigureButton(UIButton.new("PLAY", GLOBAL_FONT, ""), {
-        anchor   = NewVec2(0.5, 0.58),
+        anchor   = NewVec2(0.5, 0.50),
         size     = NewVec2(300, 75),
         normal   = NewVec4(0.15, 0.75, 0.25, 1.0), hover = NewVec4(0.20, 0.90, 0.35, 1.0), pressed = NewVec4(0.10, 0.55, 0.18, 1.0),
-        fontSize = 36,
+        fontSize = 32,
         onClick = function()
             popup:Close(function()
                 if _G.StartGame then _G.StartGame() end
@@ -253,11 +256,23 @@ local function BuildMainMenu()
         end,
     }))
 
+    container:AddChild(ConfigureButton(UIButton.new("CREDITS", GLOBAL_FONT, ""), {
+        anchor   = NewVec2(0.5, 0.67),
+        size     = NewVec2(300, 68),
+        normal   = NewVec4(0.35, 0.35, 0.38, 1.0), hover = NewVec4(0.9, 0.74, 0.0, 1.0), pressed = NewVec4(0.33, 0.33, 0.33, 1.0),
+        fontSize = 30,
+        onClick = function()
+            -- Close the menu first, then hand off to whoever opens Credits
+            -- (see OnCreate) once the close animation finishes.
+            popup:Close(onCreditsClick)
+        end,
+    }))
+
     container:AddChild(ConfigureButton(UIButton.new("EXIT", GLOBAL_FONT, ""), {
-        anchor   = NewVec2(0.5, 0.78),
-        size     = NewVec2(300, 75),
+        anchor   = NewVec2(0.5, 0.83),
+        size     = NewVec2(300, 68),
         normal   = NewVec4(0.35, 0.35, 0.38, 1.0), hover = NewVec4(0.85, 0.25, 0.25, 1.0), pressed = NewVec4(0.60, 0.15, 0.15, 1.0),
-        fontSize = 28,
+        fontSize = 30,
         onClick = function()
             Application.RequestExit()
         end,
@@ -358,17 +373,79 @@ local function BuildPauseMenu()
     return popup
 end
 
-local function BuildHUD()
-    local container = UIWidget.new()
-    container.Anchor = NewVec2(0.5, 0.03)
-    container.Pivot = NewVec2(0.5, 0.0)
-    container.Size = HUD_SIZE
+local function BuildCredits(onBackClick)
+    local container = UIButton.new("", GLOBAL_FONT, "")
+    container.Anchor = NewVec2(0.5, 0.5)
+    container.Pivot  = NewVec2(0.5, 0.5)
+    container.Size   = CREDITS_BASE_SIZE
 
-    local popup = Popup.new(container, HUD_SIZE, nil, HUD_OPEN_SPEED, HUD_OPEN_SPEED, false)
+    local popup = Popup.new(container, CREDITS_BASE_SIZE, POPUP_BG_COLOR, CREDITS_OPEN_SPEED, CREDITS_CLOSE_SPEED, true)
+
+    container:AddChild(ConfigureLabel(UIText.new("CREDITS", GLOBAL_FONT), {
+        anchor = NewVec2(0.5, 0.12), fontSize = 60, color = NewVec4(1.0, 0.85, 0.1, 1.0),
+    }))
+
+    ----------------------------------------------------------------------
+    -- Add / edit credit entries here. Each entry gets its own line,
+    -- stacked evenly between CREDITS_LIST_TOP and CREDITS_LIST_BOTTOM.
+    ----------------------------------------------------------------------
+    local CREDITS_LIST_TOP    = 0.28
+    local CREDITS_LIST_BOTTOM = 0.72
+    local CREDITS_ENTRIES = {
+        "Engine - SurgeEngine",
+        "Game Design & Programming - Rid",
+        "Art - Rid",
+        "Music & SFX - Pixabay - Royality Free Music",
+        "Fonts - Denk One",        
+    }
+
+    local count = #CREDITS_ENTRIES
+    for i, line in ipairs(CREDITS_ENTRIES) do
+        local t = (count > 1) and ((i - 1) / (count - 1)) or 0.5
+        local y = CREDITS_LIST_TOP + (CREDITS_LIST_BOTTOM - CREDITS_LIST_TOP) * t
+
+        container:AddChild(ConfigureLabel(UIText.new(line, GLOBAL_FONT), {
+            anchor = NewVec2(0.5, y), fontSize = 27, color = NewVec4(0.99, 0.99, 0.99, 1.0),
+        }))
+    end
+
+    container:AddChild(ConfigureButton(UIButton.new("BACK", GLOBAL_FONT, ""), {
+        anchor   = NewVec2(0.5, 0.87),
+        size     = NewVec2(270, 65),
+        normal   = NewVec4(0.35, 0.35, 0.38, 1.0), hover = NewVec4(0.45, 0.45, 0.50, 1.0), pressed = NewVec4(0.22, 0.22, 0.25, 1.0),
+        fontSize = 30,
+        onClick = function()
+            popup:Close(onBackClick)
+        end,
+    }))
+
+    return popup
+end
+
+local function BuildHUD()
+    -- Score badge: this container is the one that gets "punched" (briefly
+    -- scaled up) whenever the score changes, so it lives on its own.
+    local scoreContainer = UIWidget.new()
+    scoreContainer.Anchor = NewVec2(0.5, 0.03)
+    scoreContainer.Pivot = NewVec2(0.5, 0.0)
+    scoreContainer.Size = HUD_SIZE
+
+    local scorePopup = Popup.new(scoreContainer, HUD_SIZE, nil, HUD_OPEN_SPEED, HUD_OPEN_SPEED, false)
 
     local hudText = UIText.new("Score: 0 // Lives: 3", GLOBAL_FONT)
     ConfigureLabel(hudText, { anchor = NewVec2(0.5, 0.5), fontSize = 34, color = TEXT_WHITE })
-    container:AddChild(hudText)
+    scoreContainer:AddChild(hudText)
+
+    -- Buttons: a separate, identically-positioned container that mirrors
+    -- the score badge's open/close animation but never receives a punch,
+    -- so the pause button never jitters when the score bumps (e.g. on a
+    -- block drop).
+    local buttonsContainer = UIWidget.new()
+    buttonsContainer.Anchor = NewVec2(0.5, 0.03)
+    buttonsContainer.Pivot = NewVec2(0.5, 0.0)
+    buttonsContainer.Size = HUD_SIZE
+
+    local buttonsPopup = Popup.new(buttonsContainer, HUD_SIZE, nil, HUD_OPEN_SPEED, HUD_OPEN_SPEED, false)
 
     local pauseBtn = ConfigureButton(UIButton.new("||", GLOBAL_FONT, ""), {
         anchor = NewVec2(1.0, 0),
@@ -383,9 +460,9 @@ local function BuildHUD()
         end,
     })
     pauseBtn.Offset = NewVec2(0, 0) -- padding away from screen edge
-    container:AddChild(pauseBtn)
+    buttonsContainer:AddChild(pauseBtn)
 
-    return popup, hudText
+    return scorePopup, buttonsPopup, hudText
 end
 
 --------------------------------------------------------------------------
@@ -394,9 +471,11 @@ end
 local _root = nil
 
 local menuPopup = nil
+local creditsPopup = nil
 local gameOverPopup = nil
 local pausePopup = nil
-local hudPopup = nil
+local hudScorePopup = nil
+local hudButtonsPopup = nil
 
 local _hudText = nil
 local _gameOverScoreText = nil
@@ -410,7 +489,9 @@ local _isEscapeDown = false
 --------------------------------------------------------------------------
 
 local function UpdateMenu(dt)
-    if menuPopup.state == "HIDDEN" then menuPopup:Open() end
+    -- Don't auto-reopen the menu while Credits is up (or on its way up) -
+    -- the CREDITS button intentionally closes the menu first.
+    if menuPopup.state == "HIDDEN" and not creditsPopup:IsVisible() then menuPopup:Open() end
     menuPopup:Update(dt)
     if not menuPopup:IsVisible() then return end
 
@@ -421,6 +502,19 @@ local function UpdateMenu(dt)
         extraY = -CLOSE_LIFT * (menuPopup.progress * menuPopup.progress)
     end
     menuPopup:ApplyVisuals(0, extraY)
+end
+
+local function UpdateCredits(dt)
+    creditsPopup:Update(dt)
+    if not creditsPopup:IsVisible() then return end
+
+    local extraY = 0.0
+    if creditsPopup.state == "IDLE" then
+        extraY = math.sin(_animTimer * FLOAT_SPEED) * FLOAT_AMPLITUDE
+    elseif creditsPopup.state == "CLOSING" then
+        extraY = -CLOSE_LIFT * (creditsPopup.progress * creditsPopup.progress)
+    end
+    creditsPopup:ApplyVisuals(0, extraY)
 end
 
 local function UpdateGameOver(dt)
@@ -470,16 +564,22 @@ local function UpdatePause(dt)
 end
 
 local function UpdateHUD(dt)
-    if hudPopup.state == "HIDDEN" then hudPopup:Open() end
-    hudPopup:Update(dt)
+    if hudScorePopup.state == "HIDDEN" then hudScorePopup:Open() end
+    if hudButtonsPopup.state == "HIDDEN" then hudButtonsPopup:Open() end
+    hudScorePopup:Update(dt)
+    hudButtonsPopup:Update(dt)
 
     local currentScore = _G.Score or 0
-    if hudPopup.state == "IDLE" and _lastScore ~= nil and currentScore ~= _lastScore then
-        hudPopup:Punch(1.0)
+    -- Punch only the score badge - the buttons container is never punched,
+    -- so the pause button holds still while the score bumps (e.g. on a
+    -- block drop).
+    if hudScorePopup.state == "IDLE" and _lastScore ~= nil and currentScore ~= _lastScore then
+        hudScorePopup:Punch(1.0)
     end
     _lastScore = currentScore
 
-    hudPopup:ApplyVisuals(0, HUD_OFFSET_Y)
+    hudScorePopup:ApplyVisuals(0, HUD_OFFSET_Y)
+    hudButtonsPopup:ApplyVisuals(0, HUD_OFFSET_Y)
 
     if _hudText then
         _hudText.Text = "Score: " .. tostring(currentScore) .. " // Lives: " .. tostring(_G.Lives or 3)
@@ -493,13 +593,18 @@ end
 function OnCreate(entity)
     _root = UIWidget.new()
 
-    menuPopup = BuildMainMenu()
-    hudPopup, _hudText = BuildHUD()
+    -- Menu <-> Credits hand off to each other once their close animation
+    -- finishes; see the CREDITS/BACK button callbacks above.
+    menuPopup = BuildMainMenu(function() creditsPopup:Open() end)
+    creditsPopup = BuildCredits(function() menuPopup:Open() end)
+    hudScorePopup, hudButtonsPopup, _hudText = BuildHUD()
     gameOverPopup, _gameOverScoreText = BuildGameOver()
     pausePopup = BuildPauseMenu()
 
     _root:AddChild(menuPopup.container)
-    _root:AddChild(hudPopup.container)
+    _root:AddChild(creditsPopup.container)
+    _root:AddChild(hudScorePopup.container)
+    _root:AddChild(hudButtonsPopup.container)
     _root:AddChild(gameOverPopup.container)
     _root:AddChild(pausePopup.container)
 
@@ -519,18 +624,24 @@ function OnUpdate(entity, dt)
         elseif state == "PAUSED" and pausePopup.state ~= "CLOSING" then
             -- Safely trigger the collapse animation before resuming
             pausePopup:Close(function() _G.GameState = "PLAYING" end)
+        elseif state == "MENU" and creditsPopup:IsVisible() and creditsPopup.state ~= "CLOSING" then
+            -- Same hand off as the BACK button
+            creditsPopup:Close(function() menuPopup:Open() end)
         end
     end
     _isEscapeDown = escapePressed
 
     if state == "MENU" then
         UpdateMenu(dt)
+        UpdateCredits(dt)
         if gameOverPopup:IsVisible() and gameOverPopup.state ~= "CLOSING" then gameOverPopup:HideInstantly() end
         if pausePopup:IsVisible() and pausePopup.state ~= "CLOSING" then pausePopup:HideInstantly() end
-        if hudPopup:IsVisible() then hudPopup:HideInstantly() end
+        if hudScorePopup:IsVisible() then hudScorePopup:HideInstantly() end
+        if hudButtonsPopup:IsVisible() then hudButtonsPopup:HideInstantly() end
 
     elseif state == "PLAYING" then
         if menuPopup:IsVisible() and menuPopup.state ~= "CLOSING" then menuPopup:HideInstantly() end
+        if creditsPopup:IsVisible() and creditsPopup.state ~= "CLOSING" then creditsPopup:HideInstantly() end
         if gameOverPopup:IsVisible() and gameOverPopup.state ~= "CLOSING" then gameOverPopup:HideInstantly() end
         if pausePopup:IsVisible() and pausePopup.state ~= "CLOSING" then pausePopup:HideInstantly() end
         UpdateHUD(dt)
@@ -538,22 +649,28 @@ function OnUpdate(entity, dt)
     elseif state == "PAUSED" then
         UpdatePause(dt)
         if menuPopup:IsVisible() and menuPopup.state ~= "CLOSING" then menuPopup:HideInstantly() end
+        if creditsPopup:IsVisible() and creditsPopup.state ~= "CLOSING" then creditsPopup:HideInstantly() end
         if gameOverPopup:IsVisible() and gameOverPopup.state ~= "CLOSING" then gameOverPopup:HideInstantly() end
-        if hudPopup:IsVisible() then hudPopup:HideInstantly() end
+        if hudScorePopup:IsVisible() then hudScorePopup:HideInstantly() end
+        if hudButtonsPopup:IsVisible() then hudButtonsPopup:HideInstantly() end
 
     elseif state == "GAMEOVER" then
         UpdateGameOver(dt)
         if menuPopup:IsVisible() and menuPopup.state ~= "CLOSING" then menuPopup:HideInstantly() end
+        if creditsPopup:IsVisible() and creditsPopup.state ~= "CLOSING" then creditsPopup:HideInstantly() end
         if pausePopup:IsVisible() and pausePopup.state ~= "CLOSING" then pausePopup:HideInstantly() end
-        if hudPopup:IsVisible() then hudPopup:HideInstantly() end
+        if hudScorePopup:IsVisible() then hudScorePopup:HideInstantly() end
+        if hudButtonsPopup:IsVisible() then hudButtonsPopup:HideInstantly() end
     end
 end
 
 function OnDestroy(entity)
     menuPopup = nil
+    creditsPopup = nil
     gameOverPopup = nil
     pausePopup = nil
-    hudPopup = nil
+    hudScorePopup = nil
+    hudButtonsPopup = nil
     _hudText = nil
     _gameOverScoreText = nil
     _root = nil

@@ -5,8 +5,8 @@ local BLOCK_HEIGHT = 2.0
 -- Pendulum Settings
 local CRANE_PIVOT_OFFSET_Y = 13.0 -- height of the crane's anchor point above the tower
 local CABLE_LENGTH = 10.0
-local SWING_SPEED = 1.4
-local MAX_SWING_ANGLE = 0.4 -- Higher = wider swing
+local SWING_SPEED = 1.2
+local MAX_SWING_ANGLE = 0.5 -- Higher = wider swing
 
 local _timeAlive = 0.0
 local _isSpaceDown = false
@@ -73,7 +73,7 @@ function OnUpdate(entity, dt)
     end
 
     local spacePressedNow = Input.IsKeyPressed(Key.Space) -- or Input.IsMouseButtonPressed(Mouse.ButtonLeft)
-    if spacePressedNow and not _isSpaceDown then
+    if spacePressedNow and not _isSpaceDown and not _G.PlaneIncoming then
         DropBlock()
         local nextSpawnY = _G.TowerCameraTargetY + (CRANE_PIVOT_OFFSET_Y - CABLE_LENGTH)
         SpawnHangingBlock(entity, 0.0, nextSpawnY)
