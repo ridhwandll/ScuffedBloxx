@@ -1,16 +1,12 @@
-local TARGET_BLOCK_COUNT = 8
+local TARGET_BLOCK_COUNT = 15
 local FLY_SPEED = 100.0
 
-local _isTriggered = false
-local _hasSpawned = false
+local _state = "IDLE" -- "IDLE", "FLYING", "CRASHED"
 local _timeAlive = 0.0
-local _rb = nil
-local _isCollided = false
 local _cleanupTimer = 0.0
 
 local _planeIncomingAudioSrc = nil
 local _planeCrashAudioSrc = nil
-
 local _particles = {}
 
 local function RandomRange(minVal, maxVal)
@@ -51,7 +47,6 @@ local function BlowUpTower(impactPos)
             local pos = blockEntity.TransformC.Position
             
             local zOffset = pos.z - impactPos.z
-                       
             local directionZ = zOffset > 0 and 1.0 or -1.0
             local velZ = directionZ * RandomRange(30.0, 90.0)
             rb:SetLinearVelocity(Math.Vec3.new(0, 0, velZ))
@@ -69,20 +64,18 @@ function OnCreate(entity)
     _planeCrashAudioSrc = entity:FindEntityByName("Plane").AudioSourceC
 
     _G.ResetPlane = function ()
-        entity.TransformC.Position = Math.Vec3.new(-9999.0, -9999.0, -9999.0)
-        _hasSpawned = false
-        _isTriggered = false
-        _isCollided = false
-        _cleanupTimer = 0.0
+        entity.TransformC.Position = Math.Vec3.new(-9999.0, -9999.0, -9999.0)        
+        if entity:HasRigidbodyC() then entity:RemoveRigidbodyC() end
+        if entity:HasBoxColliderC() then entity:RemoveBoxColliderC() end        
         _G.PlaneIncoming = false
-        _particles = {}
+        _state = "IDLE"
+        _cleanupTimer = 0.0
     end
 
     _G.ResetPlane()
 end
 
 function OnUpdate(entity, dt)
-
     for i = #_particles, 1, -1 do
         local p = _particles[i]
         p.Life = p.Life - dt
@@ -122,77 +115,91 @@ function OnUpdate(entity, dt)
         return
     end
 
-    if not _isTriggered then
+    _timeAlive = _timeAlive + dt
+
+    -- STATE 1: Waiting for the tower to reach the threshold
+    if _state == "IDLE" then
         if _G.ActiveBlocks and #_G.ActiveBlocks >= TARGET_BLOCK_COUNT then
-            _isTriggered = true
+            _state = "FLYING"
             _G.PlaneIncoming = true
-            _planeIncomingAudioSrc:Play()
+            if _planeIncomingAudioSrc then _planeIncomingAudioSrc:Play() end
+            
+            entity.TransformC.Position = Math.Vec3.new(-400.0, _G.TowerCameraTargetY - 10, 0.0)
+            entity.TransformC.Rotation = Math.Vec3.new(0, -91.54, 0)
+            
+            local boxC = entity:HasBoxColliderC() and entity.BoxColliderC or entity:AddBoxColliderC()
+            boxC.HalfExtents = Math.Vec3.new(15.0, 6.0, 15.0)
+
+            local rb = entity:HasRigidbodyC() and entity.RigidbodyC or entity:AddRigidbodyC()
+            rb.Type = RigidbodyType.DYNAMIC
+            rb.Interpolate = true
+            rb.UseGravity = false
+            rb.ContinuousCollision = true
+            rb.Friction = 0.8
+            rb.Bounciness = 0.5
+            
+            rb:SetLinearVelocity(Math.Vec3.new(FLY_SPEED, 0.0, 0.0))
         end
         return
     end
 
-    if _isTriggered then
-        _timeAlive = _timeAlive + dt
-
-        if not _hasSpawned then
-            entity.TransformC.Position = Math.Vec3.new(-400.0, _G.TowerCameraTargetY - 10, 0.0)
-            entity.TransformC.Rotation = Math.Vec3.new(0, -91.54, 0)
-            
-            local boxC = entity:AddBoxColliderC()
-            boxC.HalfExtents = Math.Vec3.new(15.0, 6.0, 15.0)
-            
-            _rb = entity:AddRigidbodyC()
-            _rb.Type = RigidbodyType.DYNAMIC
-            _rb.Interpolate = true
-            _rb.UseGravity = false
-            _rb.ContinuousCollision = true
-            _rb.Friction = 0.8
-            _rb.Bounciness = 0.5
-            _hasSpawned = true
-            return
+    if _state == "FLYING" then
+        if entity:HasRigidbodyC() then
+            entity.RigidbodyC:SetLinearVelocity(Math.Vec3.new(FLY_SPEED, 0.0, 0.0))
         end
+
+        -- If the plane somehow misses and flies off-screen, reset it
+        if entity.TransformC.Position.x > 100.0 then
+            _G.ResetPlane()
+        end
+        return
+    end
+
+    if _state == "CRASHED" then
+        _cleanupTimer = _cleanupTimer + dt
         
-        if _isCollided then
-            _cleanupTimer = _cleanupTimer + dt
-        end
+        entity.TransformC.Position = Math.Vec3.new(-9999.0, -9999.0, -9999.0)
 
-        if _hasSpawned and _rb and not _isCollided then
-            _rb:SetLinearVelocity(Math.Vec3.new(FLY_SPEED, 0.0, 0.0))
-        end
-
-        if entity.TransformC.Position.x > 100.0 or _cleanupTimer > 0.5 then
-            if _rb then
-                entity:RemoveRigidbodyC()
-                entity:RemoveBoxColliderC()
-                _G.PlaneIncoming = false
-                _isCollided = false
-                _rb = nil
-            end            
+        if _cleanupTimer > 3.0 then
+            _G.ResetPlane()
         end
     end
 end
 
 function OnCollisionEnter(entity, otherEntity)        
+    if _state ~= "FLYING" then return end
+    
     if not otherEntity:HasNameC() then return end
     local otherName = otherEntity.NameC.Name
     
-    if otherName == "HangingBlock" and not _isCollided then
-        _isCollided = true
-        _planeCrashAudioSrc.Volume = 2
-        _planeCrashAudioSrc:Play()
+    if otherName == "HangingBlock" or otherName == "Floor" then
+        -- Instantly shift to CRASHED state
+        _state = "CRASHED"
+        _cleanupTimer = 0.0
+        
+        if _planeCrashAudioSrc then
+            _planeCrashAudioSrc.Volume = 2
+            _planeCrashAudioSrc:Play()
+        end
+
+        if _planeIncomingAudioSrc then
+            _planeIncomingAudioSrc:Stop()
+            _planeIncomingAudioSrc:Seek(0)
+        end
+
         if _G.CameraShake then _G.CameraShake(3, 1) end
         
         local impactPos = entity.TransformC.Position
         SpawnExplosionParticles(impactPos)
         BlowUpTower(impactPos)
+        
+        if entity:HasRigidbodyC() then entity:RemoveRigidbodyC() end
+        if entity:HasBoxColliderC() then entity:RemoveBoxColliderC() end
     end    
 end
 
 function OnDestroy(entity)
-    _isTriggered = false
-    _hasSpawned = false
-    _timeAlive = 0.0
-    _rb = nil
+    _state = "IDLE"
     _particles = {}
     _cleanupTimer = 0.0
 end

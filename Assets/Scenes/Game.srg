@@ -55,8 +55,8 @@
                 "Looping": false,
                 "MaxDistance": 100.0,
                 "MinDistance": 1.0,
-                "Pitch": 0.699999988079071,
-                "PlayOnAwake": true,
+                "Pitch": 0.5,
+                "PlayOnAwake": false,
                 "Volume": 2.0
             },
             "Surge::IDComponent": {
@@ -307,7 +307,7 @@
             },
             "Surge::ScriptComponent": {
                 "Active": true,
-                "ScriptAsset": 7526636842714264631
+                "ScriptAsset": 0
             },
             "Surge::TransformComponent": {
                 "Position": {

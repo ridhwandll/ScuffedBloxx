@@ -3,10 +3,10 @@ local BLOCK_SCRIPT_ASSET_PATH = "Scripts/Block.lua"
 local BLOCK_HEIGHT = 2.0       
 
 -- Pendulum Settings
-local CRANE_PIVOT_OFFSET_Y = 13.0 -- height of the crane's anchor point above the tower
+local CRANE_PIVOT_OFFSET_Y = 13.0 
 local CABLE_LENGTH = 10.0
-local SWING_SPEED = 1.2
-local MAX_SWING_ANGLE = 0.5 -- Higher = wider swing
+local SWING_SPEED = 1
+local MAX_SWING_ANGLE = 0.4
 
 local _timeAlive = 0.0
 local _isSpaceDown = false
@@ -39,14 +39,14 @@ function DropBlock()
 
     _G.AddBlock(_currentBlock) 
     _G.OnBlockDropped();
-
     _currentBlock = nil
 end
 
 function OnCreate(entity)
-
     _G.TowerHeight = 0.0          
     _G.TowerCameraTargetY = 5.0   
+    _G.Drop = false
+    
     SpawnHangingBlock(entity, 0, _G.TowerHeight + (CRANE_PIVOT_OFFSET_Y - CABLE_LENGTH))
 end
 
@@ -72,18 +72,24 @@ function OnUpdate(entity, dt)
         _currentBlock.TransformC.Rotation = Math.Vec3.new(0.0, 0.0, angleInDegrees)
     end
 
-    local spacePressedNow = Input.IsKeyPressed(Key.Space) -- or Input.IsMouseButtonPressed(Mouse.ButtonLeft)
-    if spacePressedNow and not _isSpaceDown and not _G.PlaneIncoming then
-        DropBlock()
-        local nextSpawnY = _G.TowerCameraTargetY + (CRANE_PIVOT_OFFSET_Y - CABLE_LENGTH)
-        SpawnHangingBlock(entity, 0.0, nextSpawnY)
+    local spacePressedNow = Input.IsKeyPressed(Key.Space) 
+    local uiDropRequested = (_G.Drop == true)
+
+    if (spacePressedNow and not _isSpaceDown) or uiDropRequested then
+        _G.Drop = false 
+        
+        if not _G.PlaneIncoming then
+            DropBlock()
+            local nextSpawnY = _G.TowerCameraTargetY + (CRANE_PIVOT_OFFSET_Y - CABLE_LENGTH)
+            SpawnHangingBlock(entity, 0.0, nextSpawnY)
+        end
     end
     _isSpaceDown = spacePressedNow
 
     -- 4 cable lines from the top anchor to the 4 corners of the top face
     if _currentBlock ~= nil then
         local halfW = 1.0
-        local halfH = BLOCK_HEIGHT * 0.5 -- 1.0
+        local halfH = BLOCK_HEIGHT * 0.5 
         local halfD = 1.0
 
         local cosA = math.cos(currentAngle)
@@ -101,7 +107,7 @@ function OnUpdate(entity, dt)
         local cornerBR = GetWorldPoint( halfW, halfH, -halfD)
 
         local cableColor = Math.Vec4.new(0.15, 0.15, 0.15, 1.0)
-        local cranePivot = Math.Vec3.new(0.0, pivotY + 30, 0.0) -- +30 so that it is never shown in camera
+        local cranePivot = Math.Vec3.new(0.0, pivotY + 30, 0.0)
         Renderer.DrawLine(cranePivot, cornerFL, cableColor)
         Renderer.DrawLine(cranePivot, cornerFR, cableColor)
         Renderer.DrawLine(cranePivot, cornerBL, cableColor)
@@ -113,4 +119,5 @@ function OnDestroy(entity)
     _timeAlive = 0.0
     _isSpaceDown = false
     _currentBlock = nil 
+    _G.Drop = false
 end

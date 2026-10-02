@@ -757,6 +757,9 @@ local UICanvasComponent = {}
 local AudioSourceComponent = {}
 function AudioSourceComponent:Play() end
 function AudioSourceComponent:Stop() end
+--- Seeks the audio to given time (seconds)
+---@param time number
+function AudioSourceComponent:Seek(time) end
 --- Loads and assigns an audio clip from a project-relative path.
 ---@param audioAssetPath string
 function AudioSourceComponent:SetAudioClip(audioAssetPath) end

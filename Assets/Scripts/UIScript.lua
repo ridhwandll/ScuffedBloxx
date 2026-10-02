@@ -25,7 +25,7 @@ local MENU_BASE_SIZE     = NewVec2(620, 620)
 local GAMEOVER_BASE_SIZE = NewVec2(620, 520)
 local PAUSE_BASE_SIZE    = NewVec2(620, 520)
 local CREDITS_BASE_SIZE  = NewVec2(620, 620)
-local HUD_SIZE           = NewVec2(800, 100)
+local HUD_SIZE           = NewVec2(800, 800)
 local HUD_OFFSET_Y       = 20.0
 
 local POPUP_BG_COLOR = { r = 0.12, g = 0.12, b = 0.14, a = 0.85 }
@@ -57,6 +57,16 @@ local CLOSE_LIFT = 60.0        -- px, upward drift while a popup collapses away
 
 local PUNCH_DECAY    = 6.0     -- per second
 local PUNCH_STRENGTH = 0.15    -- extra scale from a full-strength punch
+
+local DROP_BTN_SIZE         = NewVec2(180, 180) -- big, square, easy-to-hit tap target
+local DROP_BTN_RIGHT_MARGIN = 50.0  -- px, insets it from the right edge (thumb reach / safe-area)
+
+local DROP_IDLE_PULSE_AMPLITUDE = 0.05   -- +/- 5% idle "breathing" scale, draws the eye to it
+local DROP_IDLE_PULSE_SPEED     = 2.6    -- rad/sec
+
+local DROP_PRESS_DECAY   = 7.0   -- per second, how fast the press bounce settles
+local DROP_PRESS_SQUASH  = 0.22  -- vertical compression at full press strength
+local DROP_PRESS_STRETCH = 0.6   -- horizontal stretch, relative to the squash
 
 --------------------------------------------------------------------------
 -- Math helpers
@@ -223,6 +233,15 @@ local function ConfigureButton(btn, opts)
 
     return btn
 end
+
+--------------------------------------------------------------------------
+-- Drop button animation state
+--
+-- Declared up here (ahead of Module state, further down) so the drop
+-- button's onClick closure can reference _dropPunch directly as an
+-- upvalue.
+--------------------------------------------------------------------------
+local _dropPunch = 0.0
 
 --------------------------------------------------------------------------
 -- Layout construction
@@ -392,11 +411,16 @@ local function BuildCredits(onBackClick)
     local CREDITS_LIST_TOP    = 0.28
     local CREDITS_LIST_BOTTOM = 0.72
     local CREDITS_ENTRIES = {
-        "Engine - SurgeEngine",
+        "GameEngine - SURGE, RidT",
         "Game Design & Programming - Rid",
-        "Art - Rid",
-        "Music & SFX - Pixabay - Royality Free Music",
-        "Fonts - Denk One",        
+        "3D Models - Rid",
+        "Music & SFX - Pixabay",
+        "Font - Denk One",
+        "",
+        "3rd Party:",
+        "JoltPhysics, miniaudio, Vulkan 1.1, gltf",
+        "basisu, sol2, lua, json, glm, EnTT",
+        "SPIRV-Cross, VMA, DearImGUI, shaderc"
     }
 
     local count = #CREDITS_ENTRIES
@@ -433,7 +457,7 @@ local function BuildHUD()
     local scorePopup = Popup.new(scoreContainer, HUD_SIZE, nil, HUD_OPEN_SPEED, HUD_OPEN_SPEED, false)
 
     local hudText = UIText.new("Score: 0 // Lives: 3", GLOBAL_FONT)
-    ConfigureLabel(hudText, { anchor = NewVec2(0.5, 0.5), fontSize = 34, color = TEXT_WHITE })
+    ConfigureLabel(hudText, { anchor = NewVec2(0.5, 0.1), fontSize = 34, color = TEXT_WHITE })
     scoreContainer:AddChild(hudText)
 
     -- Buttons: a separate, identically-positioned container that mirrors
@@ -462,7 +486,35 @@ local function BuildHUD()
     pauseBtn.Offset = NewVec2(0, 0) -- padding away from screen edge
     buttonsContainer:AddChild(pauseBtn)
 
+    pauseBtn.Offset = NewVec2(0, 0) -- padding away from screen edge
+    buttonsContainer:AddChild(pauseBtn)
+
     return scorePopup, buttonsPopup, hudText
+end
+
+-- The drop button lives on its own, anchored directly to the root (not to
+-- the HUD's buttonsContainer) at the rightmost, vertically-centered edge
+-- of the screen - the natural one-thumb reach spot in landscape play.
+local function BuildDropButton()
+    local btn = ConfigureButton(UIButton.new("DROP", GLOBAL_FONT, ""), {
+        anchor = NewVec2(1.0, 0.5),
+        pivot  = NewVec2(1.0, 0.5),
+        size   = DROP_BTN_SIZE,
+        normal = NewVec4(0.15, 0.75, 0.25, 0.92), hover = NewVec4(0.20, 0.90, 0.35, 1.0), pressed = NewVec4(0.10, 0.55, 0.18, 1.0),
+        fontSize = 32,
+        onClick = function()
+            if _G.GameState == "PLAYING" then
+                _G.Drop = true
+                _dropPunch = 1.0
+            end
+        end,
+    })
+
+    -- Wrapped in a Popup purely to reuse its open/close/hide lifecycle
+    -- (fade + pop-in, park off-screen while hidden) - the same machinery
+    -- every other HUD/menu element already uses.
+    local popup = Popup.new(btn, DROP_BTN_SIZE, nil, HUD_OPEN_SPEED, HUD_OPEN_SPEED, false)
+    return popup
 end
 
 --------------------------------------------------------------------------
@@ -476,6 +528,7 @@ local gameOverPopup = nil
 local pausePopup = nil
 local hudScorePopup = nil
 local hudButtonsPopup = nil
+local dropButtonPopup = nil
 
 local _hudText = nil
 local _gameOverScoreText = nil
@@ -563,6 +616,24 @@ local function UpdatePause(dt)
     pausePopup:ApplyVisuals(0, extraY)
 end
 
+local function UpdateDropButton(dt)
+    if dropButtonPopup.state == "HIDDEN" then dropButtonPopup:Open() end
+    dropButtonPopup:Update(dt)
+    if not dropButtonPopup:IsVisible() then return end
+
+    _dropPunch = math.max(0.0, _dropPunch - dt * DROP_PRESS_DECAY)
+
+    -- Subtle continuous "breathing" so the primary action button keeps
+    -- drawing the eye, plus a squash-and-stretch bounce that kicks in
+    -- (and decays back out) on every press.
+    local idlePulse = 1.0 + math.sin(_animTimer * DROP_IDLE_PULSE_SPEED) * DROP_IDLE_PULSE_AMPLITUDE
+    local squash = _dropPunch * DROP_PRESS_SQUASH
+    local scaleX = idlePulse * (1.0 + squash * DROP_PRESS_STRETCH)
+    local scaleY = idlePulse * (1.0 - squash)
+
+    dropButtonPopup:ApplyVisuals(-DROP_BTN_RIGHT_MARGIN, 0, scaleX, scaleY)
+end
+
 local function UpdateHUD(dt)
     if hudScorePopup.state == "HIDDEN" then hudScorePopup:Open() end
     if hudButtonsPopup.state == "HIDDEN" then hudButtonsPopup:Open() end
@@ -580,6 +651,7 @@ local function UpdateHUD(dt)
 
     hudScorePopup:ApplyVisuals(0, HUD_OFFSET_Y)
     hudButtonsPopup:ApplyVisuals(0, HUD_OFFSET_Y)
+    UpdateDropButton(dt)
 
     if _hudText then
         _hudText.Text = "Score: " .. tostring(currentScore) .. " // Lives: " .. tostring(_G.Lives or 3)
@@ -598,6 +670,7 @@ function OnCreate(entity)
     menuPopup = BuildMainMenu(function() creditsPopup:Open() end)
     creditsPopup = BuildCredits(function() menuPopup:Open() end)
     hudScorePopup, hudButtonsPopup, _hudText = BuildHUD()
+    dropButtonPopup = BuildDropButton()
     gameOverPopup, _gameOverScoreText = BuildGameOver()
     pausePopup = BuildPauseMenu()
 
@@ -605,6 +678,7 @@ function OnCreate(entity)
     _root:AddChild(creditsPopup.container)
     _root:AddChild(hudScorePopup.container)
     _root:AddChild(hudButtonsPopup.container)
+    _root:AddChild(dropButtonPopup.container)
     _root:AddChild(gameOverPopup.container)
     _root:AddChild(pausePopup.container)
 
@@ -638,6 +712,7 @@ function OnUpdate(entity, dt)
         if pausePopup:IsVisible() and pausePopup.state ~= "CLOSING" then pausePopup:HideInstantly() end
         if hudScorePopup:IsVisible() then hudScorePopup:HideInstantly() end
         if hudButtonsPopup:IsVisible() then hudButtonsPopup:HideInstantly() end
+        if dropButtonPopup:IsVisible() then dropButtonPopup:HideInstantly() end
 
     elseif state == "PLAYING" then
         if menuPopup:IsVisible() and menuPopup.state ~= "CLOSING" then menuPopup:HideInstantly() end
@@ -653,6 +728,7 @@ function OnUpdate(entity, dt)
         if gameOverPopup:IsVisible() and gameOverPopup.state ~= "CLOSING" then gameOverPopup:HideInstantly() end
         if hudScorePopup:IsVisible() then hudScorePopup:HideInstantly() end
         if hudButtonsPopup:IsVisible() then hudButtonsPopup:HideInstantly() end
+        if dropButtonPopup:IsVisible() then dropButtonPopup:HideInstantly() end
 
     elseif state == "GAMEOVER" then
         UpdateGameOver(dt)
@@ -661,6 +737,7 @@ function OnUpdate(entity, dt)
         if pausePopup:IsVisible() and pausePopup.state ~= "CLOSING" then pausePopup:HideInstantly() end
         if hudScorePopup:IsVisible() then hudScorePopup:HideInstantly() end
         if hudButtonsPopup:IsVisible() then hudButtonsPopup:HideInstantly() end
+        if dropButtonPopup:IsVisible() then dropButtonPopup:HideInstantly() end
     end
 end
 
@@ -671,8 +748,10 @@ function OnDestroy(entity)
     pausePopup = nil
     hudScorePopup = nil
     hudButtonsPopup = nil
+    dropButtonPopup = nil
     _hudText = nil
     _gameOverScoreText = nil
+    _dropPunch = 0.0
     _root = nil
     SetUIRoot(nil)
 end
