@@ -1,8 +1,9 @@
-<center>
+<p align="center">
+  <picture>
+    <img alt="Surge" src="Assets/Texture/ScuffedIcon.png" width="467">
+  </picture>
+</p>
 
-![](Assets/Texture/ScuffedIcon.png)
-
-</center>
 
 <h1 align="center">Scuffed Bloxx</h1>
 <p align="center">
@@ -22,3 +23,8 @@ Clone this repository, build Surge Engine and run Surge Editor(Project Browser w
 
 ### Step 3
 Hit F5 in the editor and DONE!
+
+## Screenshots
+
+![](Assets/Texture/a.png)
+![](Assets/Texture/b.png)
