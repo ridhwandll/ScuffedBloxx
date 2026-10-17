@@ -1,0 +1,29 @@
+{
+    "Name": "ImphenziaPixPal",
+    "Properties": {
+        "Albedo": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "Emission": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "EmissionIntensity": 20.0,
+        "Metallic": 1.0,
+        "Reflectance": 0.5,
+        "Roughness": 1.0,
+        "UseAlbedoMap": 1,
+        "UseEmissionMap": 1,
+        "UseMetallicMap": 1,
+        "UseNormalMap": 0,
+        "UseRoughnessMap": 1
+    },
+    "Textures": {
+        "AlbedoMap": 8755888605330160229,
+        "EmissionMap": 9154806493203683754,
+        "RoughnessMetallicMap": 1914213460054453331
+    }
+}

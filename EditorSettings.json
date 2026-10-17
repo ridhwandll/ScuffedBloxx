@@ -1,0 +1,44 @@
+{
+    "ContentBrowser": {
+        "Favorites": [],
+        "FolderTreeWidth": 183.0,
+        "HiddenTypes": 0,
+        "LastDirectory": "Materials",
+        "ListView": false,
+        "SearchAllFolders": true,
+        "ShowUnimported": true,
+        "SortDescending": false,
+        "SortField": 1,
+        "ThumbnailSize": 81.0
+    },
+    "FrameCap": 144.0,
+    "GizmoOperation": -1,
+    "GizmoWorldSpace": false,
+    "LastScene": 6653976338388275355,
+    "ShowAxes": false,
+    "SnapEnabled": false,
+    "SnapRotate": 45.0,
+    "SnapScale": 0.5,
+    "SnapTranslate": 0.5,
+    "Viewports": [
+        {
+            "CameraDistance": 13.228984832763672,
+            "CameraFocalPoint": [
+                -8.518284797668457,
+                8.160270690917969,
+                12.329556465148926
+            ],
+            "CameraPitch": 0.40789785981178284,
+            "CameraSpeed": 0.0048004514537751675,
+            "CameraYaw": 6.871187210083008,
+            "HasCameraView": true,
+            "Index": 1,
+            "Type": "Scene"
+        },
+        {
+            "AspectMode": 1,
+            "Index": 1,
+            "Type": "Game"
+        }
+    ]
+}

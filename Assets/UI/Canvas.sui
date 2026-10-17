@@ -1,0 +1,43 @@
+{
+    "Root": {
+        "AnchorMax": [
+            1.0,
+            1.0
+        ],
+        "AnchorMin": [
+            0.0,
+            0.0
+        ],
+        "Children": [],
+        "Color": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "ID": 15054732543250584688,
+        "Name": "Canvas",
+        "Offset": [
+            0.0,
+            0.0
+        ],
+        "Pivot": [
+            0.0,
+            0.0
+        ],
+        "Size": [
+            0.0,
+            0.0
+        ],
+        "Type": "PANEL",
+        "Visible": true
+    },
+    "Scaler": {
+        "MatchWidthOrHeight": 1.0,
+        "ReferenceResolution": [
+            1920.0,
+            1080.0
+        ]
+    },
+    "Version": 1
+}

@@ -9,10 +9,10 @@
                 "IsStreaming": true,
                 "Looping": false,
                 "MaxDistance": 500.0,
-                "MinDistance": 1.0,
+                "MinDistance": 3.0,
                 "Pitch": 0.8999999761581421,
                 "PlayOnAwake": false,
-                "Volume": 1.399999976158142
+                "Volume": 1.7999999523162842
             },
             "Surge::IDComponent": {
                 "ID": 8363898142011356542
@@ -30,12 +30,12 @@
             "Surge::TransformComponent": {
                 "Position": {
                     "X": 0.0,
-                    "Y": 0.0,
+                    "Y": 5.3064141273498535,
                     "Z": 0.0
                 },
                 "Rotation": {
                     "X": 0.0,
-                    "Y": 0.0,
+                    "Y": -0.0,
                     "Z": 0.0
                 },
                 "Scale": {
@@ -75,12 +75,12 @@
             "Surge::TransformComponent": {
                 "Position": {
                     "X": 0.0,
-                    "Y": 0.0,
+                    "Y": 1.4278990030288696,
                     "Z": 0.0
                 },
                 "Rotation": {
                     "X": 0.0,
-                    "Y": 0.0,
+                    "Y": -0.0,
                     "Z": 0.0
                 },
                 "Scale": {
@@ -106,7 +106,12 @@
             },
             "Surge::ScriptComponent": {
                 "Active": true,
-                "ScriptAsset": 2263258219366753820
+                "Scripts": [
+                    {
+                        "Active": true,
+                        "ScriptAsset": 2263258219366753820
+                    }
+                ]
             },
             "Surge::TransformComponent": {
                 "Position": {
@@ -156,12 +161,12 @@
             "Surge::TransformComponent": {
                 "Position": {
                     "X": 0.0,
-                    "Y": 0.0,
+                    "Y": 0.041831016540527344,
                     "Z": 0.0
                 },
                 "Rotation": {
                     "X": 0.0,
-                    "Y": 0.0,
+                    "Y": -0.0,
                     "Z": 0.0
                 },
                 "Scale": {
@@ -237,13 +242,18 @@
             },
             "Surge::ScriptComponent": {
                 "Active": true,
-                "ScriptAsset": 8527828596206232642
+                "Scripts": [
+                    {
+                        "Active": true,
+                        "ScriptAsset": 8527828596206232642
+                    }
+                ]
             },
             "Surge::TransformComponent": {
                 "Position": {
-                    "X": -67.21431732177734,
-                    "Y": 13.936437606811523,
-                    "Z": -0.4683043658733368
+                    "X": -9999.0,
+                    "Y": -9999.0,
+                    "Z": -9999.0
                 },
                 "Rotation": {
                     "X": 97.37081146240234,
@@ -293,21 +303,17 @@
                 "Active": true,
                 "AngularDamping": 0.05000000074505806,
                 "Bounciness": 0.0,
-                "ContinuousCollision": false,
+                "ContinuousCollision": true,
                 "FreezeRotationX": false,
                 "FreezeRotationY": false,
                 "FreezeRotationZ": false,
-                "Friction": 0.20000000298023224,
+                "Friction": 0.5,
                 "Interpolate": true,
                 "IsSensor": false,
                 "LinearDamping": 0.05000000074505806,
                 "Mass": 1.0,
                 "Type": "STATIC",
                 "UseGravity": true
-            },
-            "Surge::ScriptComponent": {
-                "Active": true,
-                "ScriptAsset": 0
             },
             "Surge::TransformComponent": {
                 "Position": {
@@ -343,7 +349,12 @@
             },
             "Surge::ScriptComponent": {
                 "Active": true,
-                "ScriptAsset": 8294650314164503889
+                "Scripts": [
+                    {
+                        "Active": true,
+                        "ScriptAsset": 8294650314164503889
+                    }
+                ]
             },
             "Surge::TransformComponent": {
                 "Position": {
@@ -396,21 +407,26 @@
             },
             "Surge::ScriptComponent": {
                 "Active": true,
-                "ScriptAsset": 12204075465313167050
+                "Scripts": [
+                    {
+                        "Active": true,
+                        "ScriptAsset": 12204075465313167050
+                    }
+                ]
             },
             "Surge::TransformComponent": {
                 "Position": {
-                    "X": 15.0,
+                    "X": 0.0,
                     "Y": 5.0,
-                    "Z": 0.0
+                    "Z": 35.593448638916016
                 },
                 "Rotation": {
                     "X": 0.0,
-                    "Y": 0.0,
+                    "Y": -0.0,
                     "Z": 0.0
                 },
                 "Scale": {
-                    "X": 0.999701738357544,
+                    "X": 0.9997017979621887,
                     "Y": 0.999996542930603,
                     "Z": 0.9997020363807678
                 }
@@ -427,6 +443,7 @@
                     "Y": 1.0,
                     "Z": 1.0
                 },
+                "Falloff": 1.0,
                 "Intensity": 5.0,
                 "Radius": 1.0,
                 "Type": "DIRECTIONAL"
@@ -500,12 +517,12 @@
             "Surge::TransformComponent": {
                 "Position": {
                     "X": 0.0,
-                    "Y": 0.0,
+                    "Y": 2.4576821327209473,
                     "Z": 0.0
                 },
                 "Rotation": {
                     "X": 0.0,
-                    "Y": 0.0,
+                    "Y": -0.0,
                     "Z": 0.0
                 },
                 "Scale": {
@@ -592,7 +609,12 @@
             },
             "Surge::ScriptComponent": {
                 "Active": true,
-                "ScriptAsset": 6975968805991957180
+                "Scripts": [
+                    {
+                        "Active": true,
+                        "ScriptAsset": 6975968805991957180
+                    }
+                ]
             },
             "Surge::TransformComponent": {
                 "Position": {
@@ -646,8 +668,10 @@
             "Surge::UICanvasComponent": {
                 "Active": true,
                 "IsInstantiated": false,
+                "Layout": 5649633713315570292,
                 "ScriptAsset": 17519489891759269823,
-                "ShowCanvas": true
+                "ShowCanvas": true,
+                "SortOrder": 0
             }
         },
         "Size": 14

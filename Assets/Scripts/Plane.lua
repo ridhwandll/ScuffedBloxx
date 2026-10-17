@@ -1,6 +1,8 @@
-local TARGET_BLOCK_COUNT = 15
+local MIN_TARGET_BLOCKS = 15
+local MAX_TARGET_BLOCKS = 27
 local FLY_SPEED = 100.0
 
+local _targetBlockCount = 0 -- Dynamically set on reset
 local _state = "IDLE" -- "IDLE", "FLYING", "CRASHED"
 local _timeAlive = 0.0
 local _cleanupTimer = 0.0
@@ -67,9 +69,12 @@ function OnCreate(entity)
         entity.TransformC.Position = Math.Vec3.new(-9999.0, -9999.0, -9999.0)        
         if entity:HasRigidbodyC() then entity:RemoveRigidbodyC() end
         if entity:HasBoxColliderC() then entity:RemoveBoxColliderC() end        
+        
         _G.PlaneIncoming = false
         _state = "IDLE"
         _cleanupTimer = 0.0
+        
+        _targetBlockCount = math.random(MIN_TARGET_BLOCKS, MAX_TARGET_BLOCKS)
     end
 
     _G.ResetPlane()
@@ -117,9 +122,9 @@ function OnUpdate(entity, dt)
 
     _timeAlive = _timeAlive + dt
 
-    -- STATE 1: Waiting for the tower to reach the threshold
+    -- STATE 1: Waiting for the tower to reach the randomized threshold
     if _state == "IDLE" then
-        if _G.ActiveBlocks and #_G.ActiveBlocks >= TARGET_BLOCK_COUNT then
+        if _G.ActiveBlocks and #_G.ActiveBlocks >= _targetBlockCount then
             _state = "FLYING"
             _G.PlaneIncoming = true
             if _planeIncomingAudioSrc then _planeIncomingAudioSrc:Play() end
@@ -138,7 +143,7 @@ function OnUpdate(entity, dt)
             rb.Friction = 0.8
             rb.Bounciness = 0.5
             
-            rb:SetLinearVelocity(Math.Vec3.new(FLY_SPEED, 0.0, 0.0))
+            rb:SetLinearVelocity(Math.Vec3.new(FLY_SPEED, 0.0, 0.0))            
         end
         return
     end
